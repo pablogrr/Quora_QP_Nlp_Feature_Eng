@@ -194,14 +194,13 @@ def levenshtein(q1, q2):
     return dist_array[i][j]
 
 # self implemented jaccard similarity
-def jaccard_similarity(q1,q2):
-    jacc_same = 0 
-    jacc = 0 
-    for index in enumerate(q1): 
-        if q1[index] != 0 or q2[index] != 0:  
-            jacc_same += min(q1[index], q2[index])
-            jacc += max(q1[index], q2[index])  
-    return jacc_same / jacc 
+def jaccard_similarity(row):
+    q1 = row["question1"]
+    q2 = row["question2"]
+    set1 = set(q1.split()) 
+    set2 = set(q2.split())
+    same = set1.intersection(set2)
+    return float(len(same)) / (len(set1) + len(set2) - len(same))
 
 def common_tokens(string_1,string_2):
     """
@@ -335,6 +334,10 @@ def Add_features(df, scaler, col1, col2, save=False):
     df['first_word'] = df.apply(lambda df: first_word(df[col1], df[col2]), axis=1)*1
     df['last_word'] = df.apply(lambda df: last_word(df[col1], df[col2]), axis=1)*1
     print('first_word last_word done')
+
+    df["jaccard_similarity"] = df.apply(lambda x: jaccard_similarity(x), axis=1)
+    df['jaccard_similarity'] = scaler.fit_transform(df[['jaccard_similarity']])
+    print('Jaccard last_word done')
 
     if save==True:
         df.to_csv('features_added_Quora_full_train_data.csv')
