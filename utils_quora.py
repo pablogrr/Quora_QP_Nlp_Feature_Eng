@@ -194,7 +194,6 @@ def levenshtein(q1, q2):
     return dist_array[i][j]
 
 # self implemented jaccard similarity
-#from math import*
 def jaccard_similarity(q1,q2):
     jacc_same = 0 
     jacc = 0 
