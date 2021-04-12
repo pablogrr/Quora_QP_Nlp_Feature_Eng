@@ -180,7 +180,10 @@ def levenshtein(q1, q2):
     dist = [0]*3
     for i in range(1,len(q1)+1):
         for j in range(1,len(q2)+1):
-            dist[0] = dist_array[i-1][j-1] if q1[i-1]==q2[j-1] else dist_array[i-1][j-1]+1
+            if q1[i-1]==q2[j-1]:
+                dist[0] = dist_array[i-1][j-1]
+            else:
+                dist_array[i-1][j-1]+1
             dist[1] = dist_array[i][j-1]+1
             dist[2] = dist_array[i-1][j]+1
             dist_array[i][j]=min(dist)
@@ -189,14 +192,14 @@ def levenshtein(q1, q2):
 
 # self implemented jaccard similarity
 #from math import*
-def jaccard_similarity(vector1,vector2):
-    jacc_num = 0 
-    jacc_den = 0 
-    for index in enumerate(vector1): 
-        if vector1[index] != 0 or vector2[index] != 0: 
-            jacc_den += max(vector1[index], vector2[index]) 
-            jacc_num += min(vector1[index], vector2[index]) 
-    return jacc_num / jacc_den
+def jaccard_similarity(q1,q2):
+    jacc_same = 0 
+    jacc = 0 
+    for index in enumerate(q1): 
+        if q1[index] != 0 or q2[index] != 0:  
+            jacc_same += min(q1[index], q2[index])
+            jacc += max(q1[index], q2[index])  
+    return jacc_same / jacc 
 
 def common_tokens(string_1,string_2):
     """
