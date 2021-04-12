@@ -168,18 +168,21 @@ def average_len(question):
     return len(question)/num_words   
 
 # levenshtein distance (for strings of unequal length)
+# we used a similar version from the internet but adjusted it accordingly
 def levenshtein(q1, q2): 
     #create initial array (two for loops since q1 and q2 can differ in length)
     dist_array = []
+    lengthq1 = len(q1)+1
+    lengthq2 = len(q2)+1
     for i in range(len(q1)+1):
-        dist_array.append([0]*(len(q2)+1))
+        dist_array.append([0]*(lengthq2))
         dist_array[i][0] = i
     for j in range(len(q2)+1):
         dist_array[0][j] = j
 
     dist = [0]*3
-    for i in range(1,len(q1)+1):
-        for j in range(1,len(q2)+1):
+    for i in range(1,lengthq1):
+        for j in range(1,lengthq2):
             if q1[i-1]==q2[j-1]:
                 dist[0] = dist_array[i-1][j-1]
             else:
